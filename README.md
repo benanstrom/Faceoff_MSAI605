@@ -1,4 +1,4 @@
-# LFW Verification Milestone 1 (v1)
+# LFW Verification Milestone 1 (v0.1)
 
 This project implements the Milestone 1 foundation pipeline for face verification:
 
