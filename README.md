@@ -43,12 +43,18 @@ pip install -e .
 
 ## How To Run
 
-Set `--lfw_root` to your local LFW directory.
+Set `--lfw_root` to your local LFW directory (not committed to git).
+
+Windows PowerShell example (recommended to avoid path quoting issues):
+
+```powershell
+$LFW_ROOT="C:\path\to\lfw_or_lfw_funneled"
+```
 
 1. Ingest LFW and create deterministic splits + manifest
 
 ```bash
-python scripts/ingest_lfw.py --lfw_root /path/to/lfw --out_dir outputs --config configs/m1.yaml
+python scripts/ingest_lfw.py --lfw_root "$LFW_ROOT" --out_dir outputs --config configs/m1.yaml
 ```
 
 2. Generate deterministic verification pairs
