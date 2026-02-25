@@ -17,7 +17,10 @@ def main() -> None:
 
     cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
     ingest_cfg = cfg.get("ingest", cfg)
-    seed = int(cfg.get("seed", ingest_cfg["seed"]))
+    seed_raw = cfg.get("seed", ingest_cfg.get("seed"))
+    if seed_raw is None:
+        raise KeyError("Missing 'seed' in config (supported: top-level or under 'ingest').")
+    seed = int(seed_raw)
     sp_cfg = ingest_cfg["split_policy"]
     sp = SplitPolicy(
         type=str(sp_cfg["type"]),

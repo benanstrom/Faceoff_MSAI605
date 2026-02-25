@@ -18,8 +18,11 @@ def main() -> None:
 
     cfg_y = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
     pair_cfg = cfg_y.get("pairs", cfg_y)
+    seed_raw = cfg_y.get("seed", pair_cfg.get("seed"))
+    if seed_raw is None:
+        raise KeyError("Missing 'seed' in config (supported: top-level or under 'pairs').")
     cfg = PairConfig(
-        seed=int(cfg_y.get("seed", pair_cfg["seed"])),
+        seed=int(seed_raw),
         pairs_per_split={k: int(v) for k, v in pair_cfg["pairs_per_split"].items()},
         positive_fraction=float(pair_cfg["positive_fraction"]),
         min_images_per_identity=int(pair_cfg.get("min_images_per_identity", 2)),
@@ -35,3 +38,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
