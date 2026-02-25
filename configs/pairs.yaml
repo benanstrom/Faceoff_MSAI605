@@ -1,0 +1,7 @@
+seed: 1337
+pairs_per_split:
+  train: 20000
+  val: 5000
+  test: 5000
+positive_fraction: 0.5
+min_images_per_identity: 2

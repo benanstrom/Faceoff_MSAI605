@@ -1,0 +1,7 @@
+seed: 1337
+split_policy:
+  type: "person_level_hash"
+  train_frac: 0.80
+  val_frac: 0.10
+  test_frac: 0.10
+  hash: "sha256"

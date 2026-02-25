@@ -1,0 +1,4 @@
+seed: 1337
+n_pairs: 10000
+embedding_dim: 512
+tolerance: 1e-10
