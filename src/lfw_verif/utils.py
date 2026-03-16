@@ -23,5 +23,6 @@ def stable_hash_to_unit_interval(s: str, seed: int, algo: str = "sha256") -> flo
     h = hashlib.new(algo)
     h.update(f"{seed}|{s}".encode("utf-8"))
     digest = h.digest()
+    # Using only the first 8 bytes is enough here and keeps the mapping cheap and stable.
     x = int.from_bytes(digest[:8], byteorder="big", signed=False)
     return (x % (10**12)) / float(10**12)

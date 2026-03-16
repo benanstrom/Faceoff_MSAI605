@@ -56,6 +56,7 @@ def load_eval_config(path: str | Path) -> EvalConfig:
         missing_str = ", ".join(missing)
         raise EvalConfigError(f"Eval config at '{cfg_path}' is missing required field(s): {missing_str}")
 
+    # Parse into a typed object once so the rest of the evaluation code can stay strict and simple.
     return EvalConfig(
         experiment_name=_require_non_empty_string(data, "experiment_name"),
         feature_extractor=_require_non_empty_string(data, "feature_extractor"),
@@ -90,6 +91,7 @@ def _parse_threshold_sweep(value: Any, cfg_path: Path) -> ThresholdSweep:
     stop = _coerce_float(value["stop"], "threshold_sweep.stop")
     step = _coerce_float(value["step"], "threshold_sweep.step")
 
+    # These checks keep sweep generation from silently producing empty or invalid ranges.
     if step <= 0.0:
         raise EvalConfigError("Field 'threshold_sweep.step' must be greater than 0.")
     if stop < start:

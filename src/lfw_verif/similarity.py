@@ -29,6 +29,7 @@ def cosine_similarity_rows_loop(a: np.ndarray, b: np.ndarray, eps: float = 1e-12
     b = np.asarray(b, dtype=np.float64)
     if a.shape != b.shape:
         raise ValueError(f"Shape mismatch: {a.shape} vs {b.shape}")
+    # Keep a simple loop version around as a correctness baseline for the vectorized implementation.
     out = np.empty((a.shape[0],), dtype=np.float64)
     for i in range(a.shape[0]):
         num = 0.0
@@ -50,6 +51,7 @@ def euclidean_distance_rows_loop(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     b = np.asarray(b, dtype=np.float64)
     if a.shape != b.shape:
         raise ValueError(f"Shape mismatch: {a.shape} vs {b.shape}")
+    # This intentionally mirrors the row-wise math directly for easy comparison in tests/benchmarks.
     out = np.empty((a.shape[0],), dtype=np.float64)
     for i in range(a.shape[0]):
         sq = 0.0

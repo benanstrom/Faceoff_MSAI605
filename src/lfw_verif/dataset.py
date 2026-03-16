@@ -21,6 +21,7 @@ class SplitPolicy:
 def _iter_lfw_images(lfw_root: Path) -> List[Dict[str, Any]]:
     exts = {".jpg", ".jpeg", ".png", ".bmp"}
     records: List[Dict[str, Any]] = []
+    # Sorting at directory and file level keeps the manifest stable across runs and machines.
     for person_dir in sorted([p for p in lfw_root.iterdir() if p.is_dir()]):
         person = person_dir.name
         for img in sorted(person_dir.iterdir()):
@@ -91,6 +92,7 @@ def make_person_splits(manifest: Dict[str, Any]) -> Dict[str, List[str]]:
     test: List[str] = []
 
     for p in people:
+        # Each identity is assigned independently from a stable hash, so reruns produce the same split.
         u = stable_hash_to_unit_interval(p, seed=seed, algo=algo)
         if u < train_frac:
             train.append(p)

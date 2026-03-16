@@ -21,6 +21,7 @@ class PairConfig:
 
 def _files_df(manifest: Dict[str, Any]) -> pd.DataFrame:
     df = pd.DataFrame(manifest["files"])
+    # Pair sampling depends on row order, so normalize it once up front.
     return df.sort_values(["person", "relpath"]).reset_index(drop=True)
 
 
@@ -40,6 +41,7 @@ def generate_pairs_for_split(
     if len(eligible_people) < 2:
         raise RuntimeError("Not enough identities for pair generation in this split.")
 
+    # Precompute sorted per-person image lists so positive and negative sampling stay deterministic.
     person_to_paths = {
         p: sorted(df_split[df_split["person"] == p]["relpath"].to_list()) for p in eligible_people
     }
@@ -66,6 +68,7 @@ def generate_pairs_for_split(
         b_list.append(rng.choice(person_to_paths[p2]))
         y_list.append(0)
 
+    # Shuffle after class construction so CSV rows are mixed without changing the class balance.
     idx = np.arange(n_pairs)
     rng.shuffle(idx)
     a = np.array(a_list, dtype=object)[idx]
