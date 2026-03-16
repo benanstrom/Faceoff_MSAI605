@@ -1,0 +1,15 @@
+seed: 1337
+ingest:
+  split_policy:
+    type: person_level_hash
+    train_frac: 0.7
+    val_frac: 0.2
+    test_frac: 0.2
+    hash: sha256
+pairs:
+  pairs_per_split:
+    train: 10
+    val: 5
+    test: 5
+  positive_fraction: 0.5
+  min_images_per_identity: 2
