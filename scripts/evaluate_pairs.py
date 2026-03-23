@@ -63,7 +63,7 @@ def run_evaluation(
     config: EvalConfig,
     output_dir: str | Path,
     image_size: tuple[int, int] = (32, 32),
-) -> dict[str, Path]:
+) -> dict[str, Any]:
     _validate_supported_config(config)
     pair_csv_path = validate_pair_csv(pair_csv)
     output_path = Path(output_dir)
@@ -144,6 +144,12 @@ def run_evaluation(
     )
 
     return {
+        "pair_csv": pair_csv_path,
+        "output_dir": output_path,
+        "selected_threshold": float(best_threshold["threshold"]),
+        "selection_metrics": _json_ready(best_threshold),
+        "final_metrics": final_metrics,
+        "threshold_sweep": [dict(result) for result in threshold_results],
         "scores_json": scores_json,
         "metrics_json": metrics_json,
         "threshold_sweep_json": threshold_sweep_json,
