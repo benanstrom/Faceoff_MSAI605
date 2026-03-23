@@ -1,12 +1,12 @@
 experiment_name: m2_baseline
-feature_extractor: embeddings_from_manifest
+feature_extractor: grayscale_flatten_l2
 similarity_metric: cosine
 threshold_sweep:
   start: 0.00
   stop: 1.00
   step: 0.01
-threshold_selection_rule: max_validation_accuracy
+threshold_selection_rule: maximize_balanced_accuracy
 threshold_selection_split: val
 final_evaluation_split: test
-tracked_run_dir: outputs/runs/m2_baseline
-notes: Baseline Milestone 2 verification config with threshold sweep, validation-based threshold selection, and tracked outputs for reproducible evaluation and error analysis.
+tracked_run_dir: artifacts/runs
+notes: Deterministic Milestone 2 baseline using grayscale pixel features, cosine similarity, and validation-set threshold selection before final test evaluation.
