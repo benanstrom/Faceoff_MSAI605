@@ -1,0 +1,10 @@
+{
+  "splits": {
+    "test": [],
+    "train": [
+      "person_01",
+      "person_02"
+    ],
+    "val": []
+  }
+}

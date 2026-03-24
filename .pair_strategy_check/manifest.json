@@ -1,0 +1,48 @@
+{
+  "counts": {},
+  "data_source": {
+    "dataset": "unit-test"
+  },
+  "files": [
+    {
+      "filename": "person_01_01.jpg",
+      "person": "person_01",
+      "relpath": "person_01/person_01_01.jpg"
+    },
+    {
+      "filename": "person_01_02.jpg",
+      "person": "person_01",
+      "relpath": "person_01/person_01_02.jpg"
+    },
+    {
+      "filename": "person_01_03.jpg",
+      "person": "person_01",
+      "relpath": "person_01/person_01_03.jpg"
+    },
+    {
+      "filename": "person_02_01.jpg",
+      "person": "person_02",
+      "relpath": "person_02/person_02_01.jpg"
+    },
+    {
+      "filename": "person_02_02.jpg",
+      "person": "person_02",
+      "relpath": "person_02/person_02_02.jpg"
+    },
+    {
+      "filename": "person_02_03.jpg",
+      "person": "person_02",
+      "relpath": "person_02/person_02_03.jpg"
+    }
+  ],
+  "ordering_policy": "sorted",
+  "people_counts": {},
+  "seed": 1337,
+  "split_policy": "manual",
+  "split_policy_detail": {
+    "test_frac": 0.0,
+    "train_frac": 1.0,
+    "type": "manual",
+    "val_frac": 0.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "files": {
+    "train": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\.pair_strategy_check\\improved\\pairs\\train.csv"
+  },
+  "pair_policy": {
+    "min_images_per_identity": 2,
+    "pairs_per_split": {
+      "test": 0,
+      "train": 12,
+      "val": 0
+    },
+    "positive_fraction": 0.5,
+    "positive_pair_strategy": "prefer_unique"
+  },
+  "seed": 1337
+}

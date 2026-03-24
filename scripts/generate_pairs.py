@@ -26,6 +26,7 @@ def main() -> None:
         pairs_per_split={k: int(v) for k, v in pair_cfg["pairs_per_split"].items()},
         positive_fraction=float(pair_cfg["positive_fraction"]),
         min_images_per_identity=int(pair_cfg.get("min_images_per_identity", 2)),
+        positive_pair_strategy=str(pair_cfg.get("positive_pair_strategy", "sample_with_replacement")),
     )
 
     saved = generate_and_save_pairs(

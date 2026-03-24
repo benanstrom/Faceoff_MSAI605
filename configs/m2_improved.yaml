@@ -1,0 +1,24 @@
+seed: 1337
+
+pairs:
+  seed: 1337
+  pairs_per_split:
+    train: 20000
+    val: 5000
+    test: 5000
+  positive_fraction: 0.5
+  min_images_per_identity: 2
+  positive_pair_strategy: prefer_unique
+
+experiment_name: m2_improved
+feature_extractor: grayscale_flatten_l2
+similarity_metric: cosine
+threshold_sweep:
+  start: 0.00
+  stop: 1.00
+  step: 0.01
+threshold_selection_rule: maximize_balanced_accuracy
+threshold_selection_split: val
+final_evaluation_split: test
+tracked_run_dir: artifacts/runs
+notes: Milestone 2 improved setup that reduces duplicate positive training and evaluation pairs by preferring unique same-identity image combinations before any positive pair is reused.
