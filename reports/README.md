@@ -2,15 +2,14 @@
 
 This directory contains the generated deliverables for Milestone 2:
 
-- `milestone2_report.pdf`: submission-ready 2-page report artifact
-- `milestone2_report.md`: source text for the report
-- `run_comparison.csv` and `run_comparison.md`: comparison table across five tracked runs
-- `tracked_runs_summary.json`: compact summary with run purpose, thresholds, metrics, commit hash, and pair fingerprints
-- `tracked_runs/`: lightweight copied run evidence (`run.json`, `metrics.json`, `threshold_sweep.json`, `scores.json`) for the five reported runs
-- `roc_*.png`: representative ROC plots from baseline and improved runs
-- `confusion_matrix_*.png`: representative confusion matrices from baseline and improved runs
-- `error_slices/`: copied example images and `slices.json` summaries for imperfect runs
-- `fixtures/`: deterministic synthetic datasets used to generate the tracked runs bundled in this repo
+- `milestone2_report_real.pdf`: submission-ready 2-page report artifact based on the real LFW runs
+- `milestone2_report_real.md`: source text for the real report
+- `real_run_comparison.csv` and `real_run_comparison.md`: comparison table across the five real LFW tracked runs
+- `real_error_slices/`: copied example images and `slices.json` summaries for the real baseline and improved reporting runs
+- `roc_*.png`: representative ROC plots from the tracked evaluations
+- `confusion_matrix_*.png`: representative confusion matrices from the tracked evaluations
 - `report_manifest.json`: index of the generated runs and report assets
 
-Tracked run directories referenced by the report live under `../artifacts/runs/`.
+The two main reporting runs referenced by the real report live under `../artifacts/runs/`:
+- `m2_baseline_20260326T182323665994Z`
+- `m2_improved_20260326T182619316513Z`

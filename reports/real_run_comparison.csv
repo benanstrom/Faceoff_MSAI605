@@ -1,0 +1,6 @@
+label,run_dir,selected_threshold,val_bal_acc,test_bal_acc,test_acc,precision,recall,tp,fp,tn,fn,note
+baseline_16,artifacts/runs/m2_baseline_20260326T182507076789Z,0.82,0.6124,0.5668,0.5668,0.570464135021097,0.5408,1352,1018,1482,1148,Baseline exploratory run at 16x16.
+baseline_24,artifacts/runs/m2_baseline_20260326T182619315513Z,0.81,0.6182,0.5614,0.5614,0.5716954694068193,0.4896,1224,917,1583,1276,Baseline exploratory run at 24x24.
+baseline_32,artifacts/runs/m2_baseline_20260326T182323665994Z,0.8,0.621,0.5648,0.5648,0.5761278195488722,0.4904,1226,902,1598,1274,Baseline reporting run at 32x32.
+improved_32,artifacts/runs/m2_improved_20260326T182619316513Z,0.77,0.61,0.5851999999999999,0.5852,0.5753715498938429,0.6504,1626,1200,1300,874,Fair data-centric comparison using prefer_unique pairs at 32x32.
+improved_48,artifacts/runs/m2_improved_20260326T182619343545Z,0.77,0.6112,0.5886,0.5886,0.5871018482107747,0.5972,1493,1050,1450,1007,Improved exploratory run at 48x48.

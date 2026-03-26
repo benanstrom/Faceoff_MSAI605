@@ -1,0 +1,147 @@
+{
+  "run_dir": "artifacts\\runs\\m2_improved_20260326T182619316513Z",
+  "slices": {
+    "different_identity_errors": {
+      "count": 2338,
+      "examples": [
+        {
+          "label": 0,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\different_identity_errors\\01_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Russell_Simmons\\Russell_Simmons_0004.jpg",
+          "predicted_label": 1,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\different_identity_errors\\01_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Bridget_Fonda\\Bridget_Fonda_0003.jpg",
+          "score": 0.9445861002309897,
+          "split": "val"
+        },
+        {
+          "label": 0,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\different_identity_errors\\02_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Slobodan_Milosevic\\Slobodan_Milosevic_0004.jpg",
+          "predicted_label": 1,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\different_identity_errors\\02_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Toshihiko_Fukui\\Toshihiko_Fukui_0003.jpg",
+          "score": 0.9429563055636019,
+          "split": "val"
+        },
+        {
+          "label": 0,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\different_identity_errors\\03_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Chris_Byrd\\Chris_Byrd_0001.jpg",
+          "predicted_label": 1,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\different_identity_errors\\03_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Lynne_Cheney\\Lynne_Cheney_0003.jpg",
+          "score": 0.9403221633392916,
+          "split": "val"
+        }
+      ]
+    },
+    "high_similarity_false_positives": {
+      "count": 2338,
+      "examples": [
+        {
+          "label": 0,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\high_similarity_false_positives\\01_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Russell_Simmons\\Russell_Simmons_0004.jpg",
+          "predicted_label": 1,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\high_similarity_false_positives\\01_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Bridget_Fonda\\Bridget_Fonda_0003.jpg",
+          "score": 0.9445861002309897,
+          "split": "val"
+        },
+        {
+          "label": 0,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\high_similarity_false_positives\\02_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Slobodan_Milosevic\\Slobodan_Milosevic_0004.jpg",
+          "predicted_label": 1,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\high_similarity_false_positives\\02_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Toshihiko_Fukui\\Toshihiko_Fukui_0003.jpg",
+          "score": 0.9429563055636019,
+          "split": "val"
+        },
+        {
+          "label": 0,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\high_similarity_false_positives\\03_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Chris_Byrd\\Chris_Byrd_0001.jpg",
+          "predicted_label": 1,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\high_similarity_false_positives\\03_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Lynne_Cheney\\Lynne_Cheney_0003.jpg",
+          "score": 0.9403221633392916,
+          "split": "val"
+        }
+      ]
+    },
+    "low_similarity_false_negatives": {
+      "count": 1686,
+      "examples": [
+        {
+          "label": 1,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\low_similarity_false_negatives\\01_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0006.jpg",
+          "predicted_label": 0,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\low_similarity_false_negatives\\01_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0029.jpg",
+          "score": 0.38584422508094146,
+          "split": "test"
+        },
+        {
+          "label": 1,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\low_similarity_false_negatives\\02_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0006.jpg",
+          "predicted_label": 0,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\low_similarity_false_negatives\\02_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0025.jpg",
+          "score": 0.42328122582386235,
+          "split": "test"
+        },
+        {
+          "label": 1,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\low_similarity_false_negatives\\03_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Jefferson_Perez\\Jefferson_Perez_0001.jpg",
+          "predicted_label": 0,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\low_similarity_false_negatives\\03_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Jefferson_Perez\\Jefferson_Perez_0002.jpg",
+          "score": 0.42562232828899044,
+          "split": "test"
+        }
+      ]
+    },
+    "same_identity_errors": {
+      "count": 1686,
+      "examples": [
+        {
+          "label": 1,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\same_identity_errors\\01_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0006.jpg",
+          "predicted_label": 0,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\same_identity_errors\\01_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0029.jpg",
+          "score": 0.38584422508094146,
+          "split": "test"
+        },
+        {
+          "label": 1,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\same_identity_errors\\02_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0006.jpg",
+          "predicted_label": 0,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\same_identity_errors\\02_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Silvio_Berlusconi\\Silvio_Berlusconi_0025.jpg",
+          "score": 0.42328122582386235,
+          "split": "test"
+        },
+        {
+          "label": 1,
+          "left_example_path": "reports\\real_error_slices\\improved_32\\same_identity_errors\\03_left.jpg",
+          "left_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Jefferson_Perez\\Jefferson_Perez_0001.jpg",
+          "predicted_label": 0,
+          "right_example_path": "reports\\real_error_slices\\improved_32\\same_identity_errors\\03_right.jpg",
+          "right_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\LFW_Data\\lfw_funneled\\Jefferson_Perez\\Jefferson_Perez_0002.jpg",
+          "score": 0.42562232828899044,
+          "split": "test"
+        }
+      ]
+    }
+  },
+  "split": null,
+  "threshold": 0.77
+}

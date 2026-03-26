@@ -80,10 +80,14 @@ python scripts/bench_similarity.py --out_dir outputs --config configs/m1.yaml
 
 ## Reproduce The Baseline Experiment
 
-The repository includes a deterministic tracked baseline run fixture:
+The real LFW baseline evaluation pairs are already staged at:
+- `artifacts/real_eval/baseline_eval_pairs.csv`
+
+Run the tracked baseline evaluation with:
 
 ```powershell
-python scripts/run_tracked_eval.py --pairs reports/fixtures/run1_baseline_perfect/pairs.csv --config configs/m2_baseline.yaml --image-size 4 4
+$env:PYTHONPATH="src"
+python scripts/run_tracked_eval.py --pairs artifacts/real_eval/baseline_eval_pairs.csv --config configs/m2_baseline.yaml --image-size 32 32
 ```
 
 This writes a new run under `artifacts/runs/` with:
@@ -96,10 +100,12 @@ This writes a new run under `artifacts/runs/` with:
 
 ## Reproduce The Improved Experiment
 
-The repository also includes a deterministic tracked improved run fixture:
+The improved LFW evaluation pairs were regenerated with the `prefer_unique` pair policy and staged at:
+- `artifacts/real_eval/improved_eval_pairs.csv`
 
 ```powershell
-python scripts/run_tracked_eval.py --pairs reports/fixtures/run4_improved_perfect/pairs.csv --config configs/m2_improved.yaml --image-size 4 4
+$env:PYTHONPATH="src"
+python scripts/run_tracked_eval.py --pairs artifacts/real_eval/improved_eval_pairs.csv --config configs/m2_improved.yaml --image-size 32 32
 ```
 
 The improved config keeps the evaluation pipeline unchanged and changes the pair-generation policy to prefer unique positive pairs.
@@ -115,20 +121,18 @@ python scripts/extract_error_slices.py --run-dir artifacts/runs/<run_id> --outpu
 ## Report Artifacts
 
 Milestone 2 report outputs live in `reports/`:
-- `milestone2_report.pdf`
-- `milestone2_report.md`
-- `run_comparison.csv`
-- `run_comparison.md`
-- `tracked_runs_summary.json`
-- `tracked_runs/`
-- `roc_*.png`
-- `confusion_matrix_*.png`
-- `error_slices/`
+- `milestone2_report_real.pdf`
+- `milestone2_report_real.md`
+- `real_run_comparison.csv`
+- `real_run_comparison.md`
+- `real_error_slices/`
 - `report_manifest.json`
 
 Tracked experiment outputs live in `artifacts/runs/`.
-Submission report path: `reports/milestone2_report.pdf`
-Tracked-run evidence committed in the repo: `reports/tracked_runs/`
+Submission report path: `reports/milestone2_report_real.pdf`
+Key reporting runs:
+- baseline: `artifacts/runs/m2_baseline_20260326T182323665994Z`
+- improved: `artifacts/runs/m2_improved_20260326T182619316513Z`
 
 ## Verification
 
