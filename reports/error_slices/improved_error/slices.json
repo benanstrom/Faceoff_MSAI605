@@ -1,0 +1,45 @@
+{
+  "run_dir": "artifacts\\runs\\m2_improved_20260326T181207416660Z",
+  "slices": {
+    "different_identity_errors": {
+      "count": 0,
+      "examples": []
+    },
+    "high_similarity_false_positives": {
+      "count": 0,
+      "examples": []
+    },
+    "low_similarity_false_negatives": {
+      "count": 1,
+      "examples": [
+        {
+          "label": 1,
+          "left_example_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\reports\\error_slices\\improved_error\\low_similarity_false_negatives\\01_left.png",
+          "left_path": "test_pos_left.png",
+          "predicted_label": 0,
+          "right_example_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\reports\\error_slices\\improved_error\\low_similarity_false_negatives\\01_right.png",
+          "right_path": "test_pos_right.png",
+          "score": 0.49999999999949996,
+          "split": "test"
+        }
+      ]
+    },
+    "same_identity_errors": {
+      "count": 1,
+      "examples": [
+        {
+          "label": 1,
+          "left_example_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\reports\\error_slices\\improved_error\\same_identity_errors\\01_left.png",
+          "left_path": "test_pos_left.png",
+          "predicted_label": 0,
+          "right_example_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\reports\\error_slices\\improved_error\\same_identity_errors\\01_right.png",
+          "right_path": "test_pos_right.png",
+          "score": 0.49999999999949996,
+          "split": "test"
+        }
+      ]
+    }
+  },
+  "split": null,
+  "threshold": 0.5
+}

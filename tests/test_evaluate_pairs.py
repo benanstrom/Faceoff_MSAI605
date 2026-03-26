@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from PIL import Image
 
@@ -13,14 +14,42 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_evaluate_pairs_cli_writes_json_and_plot_artifacts(tmp_path: Path) -> None:
-    _make_grayscale_image(tmp_path / "val_pos_left.png", 200)
-    _make_grayscale_image(tmp_path / "val_pos_right.png", 200)
-    _make_grayscale_image(tmp_path / "val_neg_left.png", 255)
-    _make_grayscale_image(tmp_path / "val_neg_right.png", 0)
-    _make_grayscale_image(tmp_path / "test_pos_left.png", 180)
-    _make_grayscale_image(tmp_path / "test_pos_right.png", 180)
-    _make_grayscale_image(tmp_path / "test_neg_left.png", 220)
-    _make_grayscale_image(tmp_path / "test_neg_right.png", 10)
+    positive_pattern = np.array(
+        [
+            [255, 255, 0, 0],
+            [255, 255, 0, 0],
+            [0, 0, 255, 255],
+            [0, 0, 255, 255],
+        ],
+        dtype=np.uint8,
+    )
+    negative_left_pattern = np.array(
+        [
+            [255, 255, 255, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ],
+        dtype=np.uint8,
+    )
+    negative_right_pattern = np.array(
+        [
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [255, 255, 255, 255],
+            [255, 255, 255, 255],
+        ],
+        dtype=np.uint8,
+    )
+
+    _make_grayscale_image(tmp_path / "val_pos_left.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "val_pos_right.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "val_neg_left.png", negative_left_pattern)
+    _make_grayscale_image(tmp_path / "val_neg_right.png", negative_right_pattern)
+    _make_grayscale_image(tmp_path / "test_pos_left.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "test_pos_right.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "test_neg_left.png", negative_left_pattern)
+    _make_grayscale_image(tmp_path / "test_neg_right.png", negative_right_pattern)
 
     pair_csv = tmp_path / "pairs.csv"
     pd.DataFrame(
@@ -89,6 +118,10 @@ def test_evaluate_pairs_cli_writes_json_and_plot_artifacts(tmp_path: Path) -> No
     assert (output_dir / "confusion_matrix.png").exists()
 
 
-def _make_grayscale_image(path: Path, pixel_value: int) -> Path:
-    Image.new("L", (4, 4), color=pixel_value).save(path)
+def _make_grayscale_image(path: Path, pixels: int | np.ndarray) -> Path:
+    if isinstance(pixels, np.ndarray):
+        Image.fromarray(pixels, mode="L").save(path)
+        return path
+
+    Image.new("L", (4, 4), color=pixels).save(path)
     return path

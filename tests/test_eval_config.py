@@ -11,15 +11,15 @@ def test_load_eval_config_reads_baseline_config() -> None:
     cfg = load_eval_config("configs/m2_baseline.yaml")
 
     assert cfg.experiment_name == "m2_baseline"
-    assert cfg.feature_extractor == "embeddings_from_manifest"
+    assert cfg.feature_extractor == "grayscale_flatten_l2"
     assert cfg.similarity_metric == "cosine"
     assert cfg.threshold_sweep.start == 0.0
     assert cfg.threshold_sweep.stop == 1.0
     assert cfg.threshold_sweep.step == 0.01
-    assert cfg.threshold_selection_rule == "max_validation_accuracy"
+    assert cfg.threshold_selection_rule == "maximize_balanced_accuracy"
     assert cfg.threshold_selection_split == "val"
     assert cfg.final_evaluation_split == "test"
-    assert cfg.tracked_run_dir == Path("outputs/runs/m2_baseline")
+    assert cfg.tracked_run_dir == Path("artifacts/runs")
 
 
 def test_load_eval_config_rejects_missing_required_field(tmp_path: Path) -> None:
@@ -34,7 +34,7 @@ def test_load_eval_config_rejects_missing_required_field(tmp_path: Path) -> None
                 "  start: 0.0",
                 "  stop: 1.0",
                 "  step: 0.1",
-                "threshold_selection_rule: max_validation_accuracy",
+                "threshold_selection_rule: maximize_balanced_accuracy",
                 "threshold_selection_split: val",
                 "tracked_run_dir: outputs/runs/test_eval",
                 "notes: missing final_evaluation_split for test",
@@ -59,7 +59,7 @@ def test_load_eval_config_rejects_non_positive_threshold_step(tmp_path: Path) ->
                 "  start: 0.0",
                 "  stop: 1.0",
                 "  step: 0.0",
-                "threshold_selection_rule: max_validation_accuracy",
+                "threshold_selection_rule: maximize_balanced_accuracy",
                 "threshold_selection_split: val",
                 "final_evaluation_split: test",
                 "tracked_run_dir: outputs/runs/test_eval",

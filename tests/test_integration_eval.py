@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from PIL import Image
 
@@ -42,7 +43,10 @@ def test_tracked_evaluation_produces_artifacts_and_is_deterministic(tmp_path: Pa
     assert first_metrics["final_metrics"]["balanced_accuracy"] == 1.0
 
     assert first_manifest["run_id"] == first_run_dir.name
+    assert first_manifest["code_version"]["git_commit_hash"] is not None
     assert first_manifest["config"]["experiment_name"] == "tracked_integration_eval"
+    assert first_manifest["data_version"]["pair_row_count"] == 4
+    assert first_manifest["data_version"]["split_counts"] == {"test": 2, "val": 2}
     assert first_manifest["threshold"] == 0.5
     assert first_manifest["metrics"]["final_metrics"]["balanced_accuracy"] == 1.0
     assert first_manifest["notes"] == "integration test config"
@@ -69,14 +73,42 @@ def _run_tracked_eval(pair_csv: Path, config_path: Path) -> subprocess.Completed
 
 
 def _build_tiny_fixture_dataset(tmp_path: Path) -> Path:
-    _make_grayscale_image(tmp_path / "val_pos_left.png", 200)
-    _make_grayscale_image(tmp_path / "val_pos_right.png", 200)
-    _make_grayscale_image(tmp_path / "val_neg_left.png", 255)
-    _make_grayscale_image(tmp_path / "val_neg_right.png", 0)
-    _make_grayscale_image(tmp_path / "test_pos_left.png", 180)
-    _make_grayscale_image(tmp_path / "test_pos_right.png", 180)
-    _make_grayscale_image(tmp_path / "test_neg_left.png", 220)
-    _make_grayscale_image(tmp_path / "test_neg_right.png", 10)
+    positive_pattern = np.array(
+        [
+            [255, 255, 0, 0],
+            [255, 255, 0, 0],
+            [0, 0, 255, 255],
+            [0, 0, 255, 255],
+        ],
+        dtype=np.uint8,
+    )
+    negative_left_pattern = np.array(
+        [
+            [255, 255, 255, 255],
+            [255, 255, 255, 255],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ],
+        dtype=np.uint8,
+    )
+    negative_right_pattern = np.array(
+        [
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [255, 255, 255, 255],
+            [255, 255, 255, 255],
+        ],
+        dtype=np.uint8,
+    )
+
+    _make_grayscale_image(tmp_path / "val_pos_left.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "val_pos_right.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "val_neg_left.png", negative_left_pattern)
+    _make_grayscale_image(tmp_path / "val_neg_right.png", negative_right_pattern)
+    _make_grayscale_image(tmp_path / "test_pos_left.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "test_pos_right.png", positive_pattern)
+    _make_grayscale_image(tmp_path / "test_neg_left.png", negative_left_pattern)
+    _make_grayscale_image(tmp_path / "test_neg_right.png", negative_right_pattern)
 
     pair_csv = tmp_path / "pairs.csv"
     pd.DataFrame(
@@ -133,6 +165,10 @@ def _extract_path_from_stdout(stdout: str, prefix: str) -> Path:
     raise AssertionError(f"Could not find '{prefix}' in subprocess output:\n{stdout}")
 
 
-def _make_grayscale_image(path: Path, pixel_value: int) -> Path:
-    Image.new("L", (4, 4), color=pixel_value).save(path)
+def _make_grayscale_image(path: Path, pixels: int | np.ndarray) -> Path:
+    if isinstance(pixels, np.ndarray):
+        Image.fromarray(pixels, mode="L").save(path)
+        return path
+
+    Image.new("L", (4, 4), color=pixels).save(path)
     return path

@@ -1,0 +1,5 @@
+left_path,right_path,label,split
+val_pos_left.png,val_pos_right.png,1,val
+val_neg_left.png,val_neg_right.png,0,val
+test_pos_left.png,test_pos_right.png,1,test
+test_neg_left.png,test_neg_right.png,0,test

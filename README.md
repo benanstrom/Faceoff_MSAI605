@@ -1,24 +1,50 @@
-# LFW Verification Milestone 1 (v0.1)
+# LFW Verification Milestone 2 (v0.2)
 
-This project implements the Milestone 1 foundation pipeline for face verification:
+This project now includes the Milestone 1 data pipeline and the Milestone 2 evaluation stack for face verification.
 
+Milestone 1 covers:
 - deterministic LFW ingestion from a local dataset directory
 - deterministic identity-level train/val/test splitting
 - deterministic positive/negative pair generation saved to disk
-- vectorized cosine similarity and Euclidean distance for batched vectors
-- loop vs NumPy benchmark with correctness checks
+- vectorized cosine similarity and Euclidean distance benchmarking
 
-The focus is reproducibility and performance-aware plumbing for later milestones.
+Milestone 2 adds:
+- typed evaluation configs
+- pair/config validation
+- deterministic grayscale image loading and baseline feature extraction
+- threshold sweeps with balanced-accuracy selection
+- ROC and confusion-matrix plots
+- tracked experiment runs
+- error-slice extraction
+- baseline and improved experiment configs
 
 ## Repository Layout
 
-- `src/lfw_verif/`: importable package code (dataset, pairs, similarity, utils)
-- `scripts/`: CLI entrypoints for ingestion, pair generation, and benchmarking
-- `configs/`: pinned Milestone 1 settings (`m1.yaml`)
-- `tests/`: unit and determinism tests
-- `notebooks/`: optional scratch notebooks
-- `outputs/`: generated artifacts
-- `data/`: local dataset cache 
+- `src/lfw_verif/`: package code for ingestion, pairs, similarity, evaluation, plotting, tracking, and slicing
+- `scripts/`: CLI entrypoints for ingestion, pair generation, evaluation, tracked runs, and error slicing
+- `configs/`: baseline and improved Milestone 2 configs plus earlier milestone configs
+- `tests/`: unit, integration, and determinism tests
+- `outputs/`: generated Milestone 1 manifests, splits, pairs, and benchmark artifacts
+- `artifacts/runs/`: tracked Milestone 2 runs
+- `reports/`: report figures, slice examples, and run-comparison tables
+
+## Pipeline Diagram
+
+```mermaid
+flowchart LR
+    A[LFW image directory] --> B[scripts/ingest_lfw.py]
+    B --> C[outputs/lfw_manifest.json + outputs/splits.json]
+    C --> D[scripts/make_pairs.py]
+    D --> E[pair CSVs with train/val/test rows]
+    E --> F[scripts/evaluate_pairs.py]
+    F --> G[scores.json + metrics.json + threshold_sweep.json]
+    F --> H[roc.png + confusion_matrix.png]
+    E --> I[scripts/run_tracked_eval.py]
+    I --> J[artifacts/runs/<run_id>/...]
+    J --> K[scripts/extract_error_slices.py]
+    K --> L[reports/error_slices/...]
+```
+
 ## Environment Setup
 
 ### Windows PowerShell
@@ -41,66 +67,73 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-## How To Run
+## Milestone 1 Data Preparation
 
-Set `--lfw_root` to your local LFW directory (not committed to git).
-
-Windows PowerShell example (recommended to avoid path quoting issues):
+Set `--lfw_root` to your local LFW directory.
 
 ```powershell
 $LFW_ROOT="C:\path\to\lfw_or_lfw_funneled"
-```
-
-1. Ingest LFW and create deterministic splits + manifest
-
-```bash
 python scripts/ingest_lfw.py --lfw_root "$LFW_ROOT" --out_dir outputs --config configs/m1.yaml
-```
-
-2. Generate deterministic verification pairs
-
-```bash
 python scripts/make_pairs.py --manifest outputs/lfw_manifest.json --splits outputs/splits.json --out_dir outputs --config configs/m1.yaml
-```
-
-3. Run loop-vs-vectorized similarity benchmark
-
-```bash
 python scripts/bench_similarity.py --out_dir outputs --config configs/m1.yaml
 ```
 
-4. Run tests
+## Reproduce The Baseline Experiment
 
-```bash
-pytest -q
-```
-
-## Generated Artifacts
-
-- `outputs/lfw_manifest.json`
-  - Includes: `seed`, `split_policy`, `data_source`, and per-split counts for `train`, `val`, `test`
-- `outputs/splits.json`
-  - Deterministic identity split assignments and split counts
-- `outputs/pairs/train.csv`, `outputs/pairs/val.csv`, `outputs/pairs/test.csv`
-  - Columns: `left_path,right_path,label,split`
-- `outputs/pairs_manifest.json`
-  - Seed and pair policy summary
-- `outputs/bench/benchmark.json`
-  - Loop vs vectorized timings, speedup, max absolute error, and tolerance checks
-
-## Determinism Notes
-
-- Seed is fixed in `configs/m1.yaml` (`seed: 1337`).
-- Ingestion ordering is deterministic: sorted identity names, then sorted filenames.
-- Splits use deterministic hash assignment by identity.
-- Pair generation sorts candidates before seeded sampling.
-
-To confirm deterministic outputs, rerun ingestion and pair generation with the same config and compare hashes:
+The repository includes a deterministic tracked baseline run fixture:
 
 ```powershell
-Get-FileHash outputs\lfw_manifest.json
-Get-FileHash outputs\splits.json
-Get-FileHash outputs\pairs\train.csv
-Get-FileHash outputs\pairs\val.csv
-Get-FileHash outputs\pairs\test.csv
+python scripts/run_tracked_eval.py --pairs reports/fixtures/run1_baseline_perfect/pairs.csv --config configs/m2_baseline.yaml --image-size 4 4
+```
+
+This writes a new run under `artifacts/runs/` with:
+- `scores.json`
+- `metrics.json`
+- `threshold_sweep.json`
+- `roc.png`
+- `confusion_matrix.png`
+- `run.json`
+
+## Reproduce The Improved Experiment
+
+The repository also includes a deterministic tracked improved run fixture:
+
+```powershell
+python scripts/run_tracked_eval.py --pairs reports/fixtures/run4_improved_perfect/pairs.csv --config configs/m2_improved.yaml --image-size 4 4
+```
+
+The improved config keeps the evaluation pipeline unchanged and changes the pair-generation policy to prefer unique positive pairs.
+
+## Generate Error Slices
+
+Use any tracked run directory produced by `run_tracked_eval.py`:
+
+```powershell
+python scripts/extract_error_slices.py --run-dir artifacts/runs/<run_id> --output-dir reports/error_slices/<label> --max-examples 2
+```
+
+## Report Artifacts
+
+Milestone 2 report outputs live in `reports/`:
+- `milestone2_report.pdf`
+- `milestone2_report.md`
+- `run_comparison.csv`
+- `run_comparison.md`
+- `tracked_runs_summary.json`
+- `tracked_runs/`
+- `roc_*.png`
+- `confusion_matrix_*.png`
+- `error_slices/`
+- `report_manifest.json`
+
+Tracked experiment outputs live in `artifacts/runs/`.
+Submission report path: `reports/milestone2_report.pdf`
+Tracked-run evidence committed in the repo: `reports/tracked_runs/`
+
+## Verification
+
+Run the test suite with:
+
+```powershell
+python -m pytest -q
 ```

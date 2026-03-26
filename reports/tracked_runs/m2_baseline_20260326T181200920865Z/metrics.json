@@ -1,0 +1,31 @@
+{
+  "experiment_name": "m2_baseline",
+  "final_evaluation_split": "test",
+  "final_metrics": {
+    "accuracy": 1.0,
+    "balanced_accuracy": 1.0,
+    "f1": 1.0,
+    "fn": 0,
+    "fp": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "threshold": 0.5,
+    "tn": 1,
+    "tp": 1
+  },
+  "selected_threshold": 0.5,
+  "selection_metrics": {
+    "accuracy": 1.0,
+    "balanced_accuracy": 1.0,
+    "f1": 1.0,
+    "fn": 0,
+    "fp": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "threshold": 0.5,
+    "tn": 1,
+    "tp": 1
+  },
+  "threshold_selection_rule": "maximize_balanced_accuracy",
+  "threshold_selection_split": "val"
+}

@@ -1,0 +1,36 @@
+{
+  "experiment_name": "m2_baseline",
+  "feature_extractor": "grayscale_flatten_l2",
+  "pair_csv": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\reports\\fixtures\\run1_baseline_validation_sweep\\pairs.csv",
+  "scores": [
+    {
+      "label": 1,
+      "left_path": "val_pos_left.png",
+      "right_path": "val_pos_right.png",
+      "score": 0.9999999999989999,
+      "split": "val"
+    },
+    {
+      "label": 0,
+      "left_path": "val_neg_left.png",
+      "right_path": "val_neg_right.png",
+      "score": 0.0,
+      "split": "val"
+    },
+    {
+      "label": 1,
+      "left_path": "test_pos_left.png",
+      "right_path": "test_pos_right.png",
+      "score": 0.9999999999989999,
+      "split": "test"
+    },
+    {
+      "label": 0,
+      "left_path": "test_neg_left.png",
+      "right_path": "test_neg_right.png",
+      "score": 0.0,
+      "split": "test"
+    }
+  ],
+  "similarity_metric": "cosine"
+}

@@ -1,0 +1,69 @@
+{
+  "artifact_paths": {
+    "confusion_matrix_png": "artifacts\\runs\\m2_baseline_20260326T181158570087Z\\confusion_matrix.png",
+    "metrics_json": "artifacts\\runs\\m2_baseline_20260326T181158570087Z\\metrics.json",
+    "roc_png": "artifacts\\runs\\m2_baseline_20260326T181158570087Z\\roc.png",
+    "scores_json": "artifacts\\runs\\m2_baseline_20260326T181158570087Z\\scores.json",
+    "threshold_sweep_json": "artifacts\\runs\\m2_baseline_20260326T181158570087Z\\threshold_sweep.json"
+  },
+  "code_version": {
+    "git_commit_hash": "2c606e68e3990de84ca638d8cff4c89a22dce380"
+  },
+  "config": {
+    "experiment_name": "m2_baseline",
+    "feature_extractor": "grayscale_flatten_l2",
+    "final_evaluation_split": "test",
+    "notes": "Deterministic Milestone 2 baseline using grayscale pixel features, cosine similarity, and validation-set threshold selection before final test evaluation.",
+    "similarity_metric": "cosine",
+    "threshold_selection_rule": "maximize_balanced_accuracy",
+    "threshold_selection_split": "val",
+    "threshold_sweep": {
+      "start": 0.0,
+      "step": 0.01,
+      "stop": 1.0
+    },
+    "tracked_run_dir": "artifacts\\runs"
+  },
+  "data_version": {
+    "pair_csv_header": "left_path,right_path,label,split",
+    "pair_csv_path": "C:\\Users\\benan\\JupyterNotebooks\\MSAI_605\\Milestone 1\\Faceoff_MSAI605\\reports\\fixtures\\run1_baseline_validation_sweep\\pairs.csv",
+    "pair_csv_sha256": "8236a244e55172d389a50ae9ba781a373d9dcbcf4814bec760b8a0012d285694",
+    "pair_row_count": 4,
+    "referenced_dataset_sha256": "3a58bbec01eb10d281fea61040fe6416de224efbaa96b65fa5f5481d790a6af7",
+    "referenced_image_count": 8,
+    "split_counts": {
+      "test": 2,
+      "val": 2
+    }
+  },
+  "metrics": {
+    "final_metrics": {
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "threshold": 0.01,
+      "tn": 1,
+      "tp": 1
+    },
+    "selection_metrics": {
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "threshold": 0.01,
+      "tn": 1,
+      "tp": 1
+    }
+  },
+  "notes": "Deterministic Milestone 2 baseline using grayscale pixel features, cosine similarity, and validation-set threshold selection before final test evaluation.",
+  "run_id": "m2_baseline_20260326T181158570087Z",
+  "threshold": 0.01,
+  "timestamp": "2026-03-26T18:11:58.570087Z"
+}
