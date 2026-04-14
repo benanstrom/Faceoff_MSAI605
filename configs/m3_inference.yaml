@@ -1,0 +1,23 @@
+# Milestone 3 Inference Configuration
+
+embedding:
+  model_name: "facenet"          # Options: facenet
+  image_size: 160                # Input image size (pixels); FaceNet expects 160x160
+  pretrained: "vggface2"         # Pretrained weights used by InceptionResnetV1
+
+inference:
+  threshold: 0.6                 # Operating threshold re-selected on val split using balanced-accuracy rule
+                                 # NOTE: update this value after running threshold re-selection on val pairs
+  score_metric: "cosine"         # Similarity metric used (cosine similarity)
+  decision_rule: "score >= threshold → SAME"
+
+confidence:
+  method: "linear_threshold_scaling"
+  output_range: "[0.0, 1.0]"
+  midpoint: 0.5                  # Score exactly at threshold = 0.5 confidence
+  interpretation: "above 0.5 = SAME, below 0.5 = DIFFERENT, 1.0 = max SAME confidence, 0.0 = max DIFFERENT confidence"
+
+load_test:
+  num_workers: 4                 # Number of concurrent workers
+  num_requests: 100              # Total inference requests to send
+  pairs_file: "artifacts/real_eval/baseline_eval_pairs.csv"  # Deterministic input pairs
