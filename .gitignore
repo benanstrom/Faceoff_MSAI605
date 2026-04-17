@@ -13,7 +13,7 @@ env/
 
 # Data/artifacts
 data/
-artifacts/
+artifacts/runs/
 outputs/
 milestone2_guide.txt
 MSML605_MSAI605_Milestone2_Detailed.pdf

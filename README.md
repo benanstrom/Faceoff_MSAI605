@@ -1,34 +1,29 @@
-# LFW Verification Milestone 2 (v0.2)
+# LFW Verification Project
 
-This project now includes the Milestone 1 data pipeline and the Milestone 2 evaluation stack for face verification.
+This repository contains our MSML/MSAI 605 face-verification project built around the Labeled Faces in the Wild (LFW) dataset. The codebase keeps the deterministic data-preparation backbone from Milestone 1, the evaluation and experiment-tracking workflow from Milestone 2, and the current embedding-based inference components added for Milestone 3 work.
 
-Milestone 1 covers:
+The repository currently includes:
 - deterministic LFW ingestion from a local dataset directory
 - deterministic identity-level train/val/test splitting
 - deterministic positive/negative pair generation saved to disk
-- vectorized cosine similarity and Euclidean distance benchmarking
-
-Milestone 2 adds:
-- typed evaluation configs
-- pair/config validation
-- deterministic grayscale image loading and baseline feature extraction
-- threshold sweeps with balanced-accuracy selection
-- ROC and confusion-matrix plots
-- tracked experiment runs
-- error-slice extraction
-- baseline and improved experiment configs
+- vectorized scoring and benchmarking utilities from the earlier baseline pipeline
+- typed evaluation configs, validation checks, threshold sweeps, tracked runs, and error-slice extraction
+- embedding, pair-inference, confidence, Docker, and load-test utilities that are being used for Milestone 3 development
 
 ## Repository Layout
 
-- `src/lfw_verif/`: package code for ingestion, pairs, similarity, evaluation, plotting, tracking, and slicing
-- `scripts/`: CLI entrypoints for ingestion, pair generation, evaluation, tracked runs, and error slicing
-- `configs/`: baseline and improved Milestone 2 configs plus earlier milestone configs
-- `tests/`: unit, integration, and determinism tests
-- `outputs/`: generated Milestone 1 manifests, splits, pairs, and benchmark artifacts
-- `artifacts/runs/`: tracked Milestone 2 runs
-- `reports/`: report figures, slice examples, and run-comparison tables
+- `src/lfw_verif/`: package code for ingestion, pair generation, evaluation, plotting, tracking, embeddings, confidence, and inference
+- `scripts/`: runnable entrypoints for ingestion, pair generation, evaluation, tracked runs, error slicing, pair inference, and load testing
+- `configs/`: milestone configs for ingestion, evaluation, benchmarking, and current inference settings
+- `tests/`: unit, integration, determinism, and smoke tests
+- `outputs/`: generated Milestone 1 artifacts such as manifests, splits, pairs, and benchmarks
+- `artifacts/real_eval/`: committed pair CSVs used for evaluation work
+- `artifacts/runs/`: tracked evaluation runs generated locally
+- `reports/`: report figures, comparison tables, and exported report assets
 
-## Pipeline Diagram
+## Pipeline Summary
+
+The main project flow is still organized around a deterministic backbone:
 
 ```mermaid
 flowchart LR
@@ -42,8 +37,17 @@ flowchart LR
     E --> I[scripts/run_tracked_eval.py]
     I --> J[artifacts/runs/<run_id>/...]
     J --> K[scripts/extract_error_slices.py]
-    K --> L[reports/error_slices/...]
+    E --> L[scripts/infer_pairs.py]
+    E --> M[scripts/load_test.py]
 ```
+
+The current inference code path is structured as:
+1. deterministic image preprocessing
+2. embedding generation
+3. cosine similarity scoring
+4. threshold-based decision
+5. confidence computation
+6. latency measurement
 
 ## Environment Setup
 
@@ -67,6 +71,8 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
+The current dependency set includes the embedding runtime used by the inference modules (`torch`, `torchvision`, and `facenet-pytorch`) in addition to the Milestone 1 and 2 project requirements.
+
 ## Milestone 1 Data Preparation
 
 Set `--lfw_root` to your local LFW directory.
@@ -78,10 +84,11 @@ python scripts/make_pairs.py --manifest outputs/lfw_manifest.json --splits outpu
 python scripts/bench_similarity.py --out_dir outputs --config configs/m1.yaml
 ```
 
-## Reproduce The Baseline Experiment
+## Milestone 2 Evaluation Workflow
 
-The real LFW baseline evaluation pairs are already staged at:
+The real LFW evaluation pair files staged in the repository are:
 - `artifacts/real_eval/baseline_eval_pairs.csv`
+- `artifacts/real_eval/improved_eval_pairs.csv`
 
 Run the tracked baseline evaluation with:
 
@@ -90,7 +97,14 @@ $env:PYTHONPATH="src"
 python scripts/run_tracked_eval.py --pairs artifacts/real_eval/baseline_eval_pairs.csv --config configs/m2_baseline.yaml --image-size 32 32
 ```
 
-This writes a new run under `artifacts/runs/` with:
+Run the tracked improved evaluation with:
+
+```powershell
+$env:PYTHONPATH="src"
+python scripts/run_tracked_eval.py --pairs artifacts/real_eval/improved_eval_pairs.csv --config configs/m2_improved.yaml --image-size 32 32
+```
+
+Each tracked run writes a directory under `artifacts/runs/` containing:
 - `scores.json`
 - `metrics.json`
 - `threshold_sweep.json`
@@ -98,46 +112,65 @@ This writes a new run under `artifacts/runs/` with:
 - `confusion_matrix.png`
 - `run.json`
 
-## Reproduce The Improved Experiment
-
-The improved LFW evaluation pairs were regenerated with the `prefer_unique` pair policy and staged at:
-- `artifacts/real_eval/improved_eval_pairs.csv`
-
-```powershell
-$env:PYTHONPATH="src"
-python scripts/run_tracked_eval.py --pairs artifacts/real_eval/improved_eval_pairs.csv --config configs/m2_improved.yaml --image-size 32 32
-```
-
-The improved config keeps the evaluation pipeline unchanged and changes the pair-generation policy to prefer unique positive pairs.
-
-## Generate Error Slices
-
-Use any tracked run directory produced by `run_tracked_eval.py`:
+Generate error slices from any tracked run directory with:
 
 ```powershell
 python scripts/extract_error_slices.py --run-dir artifacts/runs/<run_id> --output-dir reports/error_slices/<label> --max-examples 2
 ```
 
-## Report Artifacts
+## Current Inference Utilities
 
-Milestone 2 report outputs live in `reports/`:
-- `milestone2_report_real.pdf`
-- `milestone2_report_real.md`
+The repository now also includes current Milestone 3 development utilities:
+- `src/lfw_verif/embeddings.py`
+- `src/lfw_verif/confidence.py`
+- `src/lfw_verif/inference.py`
+- `scripts/infer_pairs.py`
+- `scripts/load_test.py`
+- `configs/m3_inference.yaml`
+- `Dockerfile`
+
+These files are the current inference-facing entrypoints in the repo and are intended to be used with the embedding-based verification path.
+
+Example CLI help:
+
+```powershell
+python scripts/infer_pairs.py --help
+python scripts/load_test.py --help
+```
+
+## Docker
+
+A Docker build path is defined in `Dockerfile`.
+
+Build the image with:
+
+```powershell
+docker build -t lfw-verification .
+```
+
+The container currently installs the project dependencies and the embedding runtime used by the inference modules.
+
+## Reports And Artifacts
+
+Milestone 2 report outputs live in `reports/`, including:
+- `Milestone2_report.pdf`
 - `real_run_comparison.csv`
 - `real_run_comparison.md`
-- `real_error_slices/`
 - `report_manifest.json`
+- ROC and confusion-matrix figures
 
-Tracked experiment outputs live in `artifacts/runs/`.
-Submission report path: `reports/milestone2_report_real.pdf`
-Key reporting runs:
-- baseline: `artifacts/runs/m2_baseline_20260326T182323665994Z`
-- improved: `artifacts/runs/m2_improved_20260326T182619316513Z`
+Tracked evaluation outputs are written under `artifacts/runs/`.
 
 ## Verification
 
-Run the test suite with:
+Run the full test suite with:
 
 ```powershell
 python -m pytest -q
+```
+
+If you only want the newer inference-related tests:
+
+```powershell
+python -m pytest tests/test_inference.py tests/test_smoke.py -q
 ```

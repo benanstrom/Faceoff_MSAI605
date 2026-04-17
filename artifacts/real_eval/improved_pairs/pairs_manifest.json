@@ -1,0 +1,18 @@
+{
+  "files": {
+    "test": "artifacts\\real_eval\\improved_pairs\\pairs\\test.csv",
+    "train": "artifacts\\real_eval\\improved_pairs\\pairs\\train.csv",
+    "val": "artifacts\\real_eval\\improved_pairs\\pairs\\val.csv"
+  },
+  "pair_policy": {
+    "min_images_per_identity": 2,
+    "pairs_per_split": {
+      "test": 5000,
+      "train": 20000,
+      "val": 5000
+    },
+    "positive_fraction": 0.5,
+    "positive_pair_strategy": "prefer_unique"
+  },
+  "seed": 1337
+}
