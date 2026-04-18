@@ -27,10 +27,12 @@ def test_inference_pipeline_runs(tmp_path):
     using synthetic (dummy) images and a dummy embedder.
     """
     from PIL import Image
+    import tempfile, os
 
     # Create two dummy RGB images
-    img_a = tmp_path / "face_a.jpg"
-    img_b = tmp_path / "face_b.jpg"
+    tmp_dir = Path(tempfile.mkdtemp())
+    img_a = tmp_dir / "face_a.jpg"
+    img_b = tmp_dir / "face_b.jpg"
     Image.fromarray(
         np.full((160, 160, 3), 128, dtype=np.uint8)
     ).save(img_a)
