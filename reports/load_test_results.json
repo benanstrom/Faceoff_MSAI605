@@ -1,0 +1,12 @@
+{
+  "total_requests": 20,
+  "successful": 20,
+  "failures": 0,
+  "wall_time_seconds": 6.3346,
+  "throughput_rps": 3.1573,
+  "latency_mean": 0.2862,
+  "latency_median": 0.2859,
+  "latency_p95": 0.3837,
+  "latency_min": 0.101,
+  "latency_max": 0.504
+}

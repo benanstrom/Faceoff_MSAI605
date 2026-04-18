@@ -1,0 +1,67 @@
+[
+  {
+    "image_a": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Jane_Fonda\\Jane_Fonda_0002.jpg",
+    "image_b": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Jane_Fonda\\Jane_Fonda_0001.jpg",
+    "score": 0.076105,
+    "threshold": 0.6,
+    "decision": false,
+    "decision_label": "DIFFERENT",
+    "confidence": 0.3363,
+    "latency_seconds": 0.2238,
+    "embed_latency_a": 0.1711,
+    "embed_latency_b": 0.0519,
+    "score_latency": 0.000739
+  },
+  {
+    "image_a": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Hootie_Johnson\\Hootie_Johnson_0002.jpg",
+    "image_b": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Hootie_Johnson\\Hootie_Johnson_0001.jpg",
+    "score": 0.205329,
+    "threshold": 0.6,
+    "decision": false,
+    "decision_label": "DIFFERENT",
+    "confidence": 0.3767,
+    "latency_seconds": 0.1088,
+    "embed_latency_a": 0.0579,
+    "embed_latency_b": 0.0508,
+    "score_latency": 7.1e-05
+  },
+  {
+    "image_a": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\George_Tenet\\George_Tenet_0001.jpg",
+    "image_b": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\George_Tenet\\George_Tenet_0002.jpg",
+    "score": 0.670348,
+    "threshold": 0.6,
+    "decision": true,
+    "decision_label": "SAME",
+    "confidence": 0.5879,
+    "latency_seconds": 0.1126,
+    "embed_latency_a": 0.0583,
+    "embed_latency_b": 0.0542,
+    "score_latency": 5.9e-05
+  },
+  {
+    "image_a": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Michelle_Rodriguez\\Michelle_Rodriguez_0002.jpg",
+    "image_b": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Michelle_Rodriguez\\Michelle_Rodriguez_0001.jpg",
+    "score": 0.648396,
+    "threshold": 0.6,
+    "decision": true,
+    "decision_label": "SAME",
+    "confidence": 0.5605,
+    "latency_seconds": 0.1115,
+    "embed_latency_a": 0.0591,
+    "embed_latency_b": 0.0523,
+    "score_latency": 4.9e-05
+  },
+  {
+    "image_a": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Jesse_Ventura\\Jesse_Ventura_0002.jpg",
+    "image_b": "C:\\Users\\Dharmesh\\Desktop\\SEM 2\\605\\New folder\\Faceoff_MSAI605\\lfw-deepfunneled\\lfw-deepfunneled\\Jesse_Ventura\\Jesse_Ventura_0001.jpg",
+    "score": 0.743813,
+    "threshold": 0.6,
+    "decision": true,
+    "decision_label": "SAME",
+    "confidence": 0.6798,
+    "latency_seconds": 0.1064,
+    "embed_latency_a": 0.0562,
+    "embed_latency_b": 0.0501,
+    "score_latency": 4.6e-05
+  }
+]
