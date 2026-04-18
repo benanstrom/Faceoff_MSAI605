@@ -117,6 +117,106 @@ Generate error slices from any tracked run directory with:
 ```powershell
 python scripts/extract_error_slices.py --run-dir artifacts/runs/<run_id> --output-dir reports/error_slices/<label> --max-examples 2
 ```
+## Milestone 3: Embedding-Based Inference System
+
+Milestone 3 upgrades the face verification system from a weak placeholder representation to an
+embedding-based pipeline, packages it in Docker, and measures runtime behavior under concurrent usage.
+
+### What Milestone 3 adds
+- FaceNet (InceptionResnetV1, pretrained on VGGFace2) embedding stage (512-dim vectors)
+- Cosine similarity scoring from embeddings
+- Calibrated confidence output (linear threshold scaling, range [0.0, 1.0])
+- CLI inference interface (single pair and batch modes)
+- Docker packaging for reproducible deployment
+- Concurrency load test with throughput and p95 latency reporting
+
+### Pipeline Summary
+- Image A + Image B
+- Preprocess (resize 160x160, normalize [-1,1])
+- Embed (FaceNet InceptionResnetV1, 512-dim)
+- Cosine Similarity Score
+- Threshold Decision (threshold in configs/m3_inference.yaml)
+- Calibrated Confidence
+- Output: score, decision, confidence, latency
+
+### Confidence Explanation
+Confidence is computed via linear scaling around the operating threshold:
+- At threshold → 0.5 (maximum uncertainty)
+- Score = 1.0 → 1.0 (maximum SAME confidence)
+- Score = -1.0 → 0.0 (maximum DIFFERENT confidence)
+- Above 0.5 = SAME, below 0.5 = DIFFERENT
+
+### Design Notes
+- **Embedding model:** FaceNet InceptionResnetV1 pretrained on VGGFace2 (512-dim)
+- **Threshold:** 0.6 (selected on val split using balanced-accuracy rule)
+- **Confidence:** Linear threshold scaling — score at threshold = 0.5, scales to 0.0 and 1.0 at extremes
+
+### Environment Setup
+```bash
+python -m venv .venv
+# Windows
+.\.venv\Scripts\Activate.ps1
+# Mac/Linux
+source .venv/bin/activate
+
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install facenet-pytorch --no-deps
+pip install -e . --no-deps
+pip install requests tqdm
+```
+
+### Docker Setup
+```bash
+# Build
+docker build -t faceoff-m3 .
+
+# Single pair inference
+docker run --rm faceoff-m3 python scripts/infer_pairs.py \
+  --image-a path/to/face_a.jpg \
+  --image-b path/to/face_b.jpg
+
+# Batch inference
+docker run --rm faceoff-m3 python scripts/infer_pairs.py \
+  --pairs-csv artifacts/real_eval/m3_sample_pairs.csv \
+  --output-json reports/infer_results.json
+```
+
+### CLI Inference (local)
+```bash
+# Single pair
+python scripts/infer_pairs.py --image-a path/to/a.jpg --image-b path/to/b.jpg
+
+# Batch
+python scripts/infer_pairs.py \
+  --pairs-csv artifacts/real_eval/m3_sample_pairs.csv \
+  --output-json reports/infer_results.json
+```
+
+### Load Test
+```bash
+python scripts/load_test.py \
+  --pairs-csv artifacts/real_eval/m3_sample_pairs.csv \
+  --num-workers 4 \
+  --num-requests 20 \
+  --output-json reports/load_test_results.json
+```
+
+### Run Tests
+```bash
+python -m pytest -q
+```
+
+### Milestone 3 Artifact Paths
+- Inference config: `configs/m3_inference.yaml`
+- CLI script: `scripts/infer_pairs.py`
+- Load test script: `scripts/load_test.py`
+- Sample pairs: `artifacts/real_eval/m3_sample_pairs.csv`
+- Load test results: `reports/load_test_results.json`
+- Sample inference results: `reports/infer_results.json`
+
+### Milestone 3 Tag
+`v0.3`
 
 ## Current Inference Utilities
 
