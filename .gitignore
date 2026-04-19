@@ -28,3 +28,33 @@ Thumbs.db
 
 # Logs
 *.log
+
+
+# LFW dataset
+lfw/
+lfw-deepfunneled/
+*.tgz
+
+# Large generated pair CSVs
+artifacts/real_eval/m3_eval_pairs.csv
+artifacts/real_eval/m3_eval_pairs_filtered.csv
+
+lfw_allnames.csv
+
+lfw_readme.csv
+
+matchpairsDevTest.csv
+
+matchpairsDevTrain.csv
+
+mismatchpairsDevTest.csv
+
+mismatchpairsDevTrain.csv
+
+pairs.csv
+
+people.csv
+
+peopleDevTest.csv
+
+peopleDevTrain.csv
