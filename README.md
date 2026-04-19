@@ -358,8 +358,16 @@ Image A + Image B
 ### Design Notes
 
 - **Embedding model:** FaceNet InceptionResnetV1 pretrained on VGGFace2, 512-dim output
-- **Threshold:** 0.6 — selected on val split using balanced-accuracy rule
-- **Confidence:** Linear scaling around threshold. At threshold = 0.5, score 1.0 = 1.0, score -1.0 = 0.0. Above 0.5 = SAME, below 0.5 = DIFFERENT.
+- **Threshold:** 0.6 — selected on validation split using balanced accuracy maximization (same procedure as Milestone 2)
+- **Confidence:** Computed as a linear transformation of the similarity score relative to the threshold:
+
+confidence = (score - threshold + 1) / 2
+
+Range: [0, 1]
+
+Interpretation:
+- Values close to 1 → high confidence in SAME prediction
+- Values close to 0 → high confidence in DIFFERENT prediction
 
 ### Docker
 
@@ -398,6 +406,37 @@ python scripts/load_test.py \
   --num-workers 4 \
   --num-requests 20 \
   --output-json reports/load_test_results.json
+```
+### Reported Metrics
+- Total requests processed
+- Throughput (requests/second)
+- Average latency
+- p95 latency (tail latency)
+- Failure count (if any)
+
+### Sample CLI Output
+
+```
+Loading embedder: facenet
+Running inference on 5 pairs...
+[1/5] ------------------------------------------------------------
+Image A    : lfw-deepfunneled/Jane_Fonda/Jane_Fonda_0002.jpg
+Image B    : lfw-deepfunneled/Jane_Fonda/Jane_Fonda_0001.jpg
+Score      : 0.076105
+Threshold  : 0.6
+Decision   : DIFFERENT
+Confidence : 0.3363
+Latency    : 0.2238s
+------------------------------------------------------------
+[2/5] ------------------------------------------------------------
+Image A    : lfw-deepfunneled/George_Tenet/George_Tenet_0001.jpg
+Image B    : lfw-deepfunneled/George_Tenet/George_Tenet_0002.jpg
+Score      : 0.670348
+Threshold  : 0.6
+Decision   : SAME
+Confidence : 0.5879
+Latency    : 0.1126s
+------------------------------------------------------------
 ```
 
 ### Milestone 3 Artifact Paths
