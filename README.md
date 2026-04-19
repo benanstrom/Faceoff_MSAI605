@@ -233,7 +233,219 @@ These files are the current inference-facing entrypoints in the repo and are int
 
 Example CLI help:
 
+```powershell# LFW Face Verification Project
+
+**MSML/MSAI 605 — Face Verification on the Labeled Faces in the Wild Dataset**
+
+This repository contains our MSML/MSAI 605 face-verification project built around the Labeled Faces in the Wild (LFW) dataset. The codebase keeps the deterministic data-preparation backbone from Milestone 1, the evaluation and experiment-tracking workflow from Milestone 2, and the embedding-based deployable inference system added in Milestone 3.
+
+---
+
+## What Each Milestone Contributes
+
+| Milestone | Main Contribution |
+|---|---|
+| Milestone 1 | Deterministic LFW ingestion, identity-level splitting, pair generation, vectorized scoring |
+| Milestone 2 | Threshold calibration, tracked runs, error analysis, data-centric iteration, validation checks |
+| **Milestone 3** | **Embedding-based inference, Docker packaging, CLI interface, concurrency load testing** |
+
+---
+
+## Repository Layout
+
+```
+src/lfw_verif/       ← core package (ingestion, pairs, similarity, evaluation, embeddings, inference, confidence)
+scripts/             ← CLI entrypoints (ingest, make_pairs, evaluate, tracked runs, infer, load test)
+configs/             ← YAML configs for all milestones
+tests/               ← unit, integration, determinism, and smoke tests
+artifacts/real_eval/ ← committed pair CSVs used for evaluation
+artifacts/runs/      ← tracked evaluation run outputs (generated locally)
+reports/             ← figures, comparison tables, and report assets
+outputs/             ← Milestone 1 manifests, splits, pairs, benchmarks
+```
+
+---
+
+## Environment Setup
+
+### Windows PowerShell
+
 ```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pip install facenet-pytorch --no-deps
+pip install requests tqdm
+pip install -e . --no-deps
+```
+
+### macOS/Linux
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install facenet-pytorch --no-deps
+pip install requests tqdm
+pip install -e . --no-deps
+```
+
+---
+
+## Milestone 1: Data Preparation
+
+```powershell
+$LFW_ROOT="C:\path\to\lfw"
+python scripts/ingest_lfw.py --lfw_root "$LFW_ROOT" --out_dir outputs --config configs/m1.yaml
+python scripts/make_pairs.py --manifest outputs/lfw_manifest.json --splits outputs/splits.json --out_dir outputs --config configs/m1.yaml
+python scripts/bench_similarity.py --out_dir outputs --config configs/m1.yaml
+```
+
+---
+
+## Milestone 2: Tracked Evaluation
+
+Staged pair files:
+- `artifacts/real_eval/baseline_eval_pairs.csv`
+- `artifacts/real_eval/improved_eval_pairs.csv`
+
+```powershell
+$env:PYTHONPATH="src"
+python scripts/run_tracked_eval.py --pairs artifacts/real_eval/baseline_eval_pairs.csv --config configs/m2_baseline.yaml --image-size 32 32
+python scripts/run_tracked_eval.py --pairs artifacts/real_eval/improved_eval_pairs.csv --config configs/m2_improved.yaml --image-size 32 32
+```
+
+Each tracked run writes to `artifacts/runs/<run_id>/` containing `scores.json`, `metrics.json`, `threshold_sweep.json`, `roc.png`, `confusion_matrix.png`, and `run.json`.
+
+```powershell
+python scripts/extract_error_slices.py --run-dir artifacts/runs/<run_id> --output-dir reports/error_slices/<label> --max-examples 2
+```
+
+---
+
+## ✅ Milestone 3: Embedding-Based Inference System (NEW)
+
+> Milestone 3 upgrades the verifier from a weak placeholder representation to a full embedding-based inference system, packaged in Docker and characterized under concurrent load.
+
+### New Files Added in Milestone 3
+
+| File | Purpose |
+|---|---|
+| `src/lfw_verif/embeddings.py` | FaceNet preprocessing and embedding extraction |
+| `src/lfw_verif/inference.py` | Full pair-level inference pipeline with stage separation |
+| `src/lfw_verif/confidence.py` | Calibrated confidence computation |
+| `scripts/infer_pairs.py` | CLI entrypoint — single pair and batch inference |
+| `scripts/load_test.py` | Concurrency load test with throughput and p95 latency |
+| `configs/m3_inference.yaml` | Inference config — model, threshold, load test settings |
+| `Dockerfile` | Reproducible container build |
+| `tests/test_inference.py` | Unit tests for similarity, threshold, confidence |
+| `tests/test_smoke.py` | End-to-end smoke test for inference pipeline |
+
+### Inference Pipeline (Milestone 3)
+
+```
+Image A + Image B
+    → Preprocess (resize 160x160, normalize [-1, 1])
+    → FaceNet InceptionResnetV1 (512-dim embeddings, pretrained VGGFace2)
+    → Cosine Similarity Score
+    → Threshold Decision (threshold: 0.6, selected on val split)
+    → Calibrated Confidence
+    → Output: score, decision, confidence, latency
+```
+
+### Design Notes
+
+- **Embedding model:** FaceNet InceptionResnetV1 pretrained on VGGFace2, 512-dim output
+- **Threshold:** 0.6 — selected on val split using balanced-accuracy rule
+- **Confidence:** Linear scaling around threshold. At threshold = 0.5, score 1.0 = 1.0, score -1.0 = 0.0. Above 0.5 = SAME, below 0.5 = DIFFERENT.
+
+### Docker
+
+```powershell
+# Build
+docker build -t faceoff-m3 .
+
+# Single pair inference
+docker run --rm faceoff-m3 python scripts/infer_pairs.py \
+  --image-a path/to/face_a.jpg \
+  --image-b path/to/face_b.jpg
+
+# Batch inference
+docker run --rm faceoff-m3 python scripts/infer_pairs.py \
+  --pairs-csv artifacts/real_eval/m3_sample_pairs.csv \
+  --output-json reports/infer_results.json
+```
+
+### CLI Inference (local)
+
+```powershell
+# Single pair
+python scripts/infer_pairs.py --image-a path/to/a.jpg --image-b path/to/b.jpg
+
+# Batch
+python scripts/infer_pairs.py \
+  --pairs-csv artifacts/real_eval/m3_sample_pairs.csv \
+  --output-json reports/infer_results.json
+```
+
+### Load Test
+
+```powershell
+python scripts/load_test.py \
+  --pairs-csv artifacts/real_eval/m3_sample_pairs.csv \
+  --num-workers 4 \
+  --num-requests 20 \
+  --output-json reports/load_test_results.json
+```
+
+### Milestone 3 Artifact Paths
+
+| Artifact | Path |
+|---|---|
+| Inference config | `configs/m3_inference.yaml` |
+| CLI script | `scripts/infer_pairs.py` |
+| Load test script | `scripts/load_test.py` |
+| Sample pairs | `artifacts/real_eval/m3_sample_pairs.csv` |
+| Sample inference output | `reports/infer_results.json` |
+| Load test results | `reports/load_test_results.json` |
+
+---
+
+## Reports and Artifacts
+
+Milestone 2 report outputs live in `reports/`, including:
+- `Milestone2_report.pdf`
+- `real_run_comparison.csv`
+- `real_run_comparison.md`
+- `report_manifest.json`
+- ROC and confusion-matrix figures
+
+Tracked evaluation outputs are written under `artifacts/runs/`.
+
+---
+
+## Run Tests
+
+```powershell
+# Full test suite
+python -m pytest -q
+
+# Milestone 3 inference tests only
+python -m pytest tests/test_inference.py tests/test_smoke.py -v
+```
+
+---
+
+## Milestone Tags
+
+| Tag | Milestone |
+|---|---|
+| `v0.1` | Milestone 1 — Data pipeline |
+| `v0.2` | Milestone 2 — Evaluation and tracking |
+| `v0.3` | Milestone 3 — Embedding inference and Docker |
+
 python scripts/infer_pairs.py --help
 python scripts/load_test.py --help
 ```
