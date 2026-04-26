@@ -100,8 +100,8 @@ def main():
         print(f"Running inference on {len(pairs)} pairs...")
         for i, row in enumerate(pairs, 1):
             result = run_inference(
-                row["image_a"],
-                row["image_b"],
+                row.get("image_a") or row.get("left_path"),
+                row.get("image_b") or row.get("right_path"),
                 threshold=threshold,
                 embedder=embedder,
                 image_size=image_size,

@@ -90,9 +90,13 @@ def main():
     pairs = [all_pairs[i % len(all_pairs)] for i in range(num_requests)]
 
     task_args = [
-        (row["image_a"], row["image_b"], threshold, model_name, image_size)
-        for row in pairs
-    ]
+    (
+        row.get("image_a") or row.get("left_path"),
+        row.get("image_b") or row.get("right_path"),
+        threshold, model_name, image_size
+    )
+    for row in pairs
+]
 
     print(f"Load test: {num_requests} requests | {num_workers} workers")
     print(f"Pairs file: {pairs_file}")

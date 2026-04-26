@@ -20,4 +20,4 @@ confidence:
 load_test:
   num_workers: 4                 # Number of concurrent workers
   num_requests: 100              # Total inference requests to send
-  pairs_file: "artifacts/real_eval/baseline_eval_pairs.csv"  # Deterministic input pairs
+  pairs_file: "artifacts/real_eval/m3_sample_pairs.csv"  # Deterministic input pairs
