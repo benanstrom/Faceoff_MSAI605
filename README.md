@@ -525,3 +525,55 @@ If you only want the newer inference-related tests:
 ```powershell
 python -m pytest tests/test_inference.py tests/test_smoke.py -q
 ```
+
+---
+
+## ✅ Milestone 4: Final Audit, Profiling, and Release (NEW)
+
+> Milestone 4 finalizes the system with a responsible audit, hardware-aware profiling, and a clean reproducible release.
+
+### What Milestone 4 adds
+
+| Addition | Location |
+|---|---|
+| Profiling script (stage-wise latency + batch sensitivity) | `scripts/profile_inference.py` |
+| System Card (intended use, limits, fairness risks, metrics) | `reports/system_card.md` |
+| Reproducibility checklist (exact commands + artifact paths) | `reports/reproducibility_checklist.md` |
+| Profiling results (CPU baseline, batch sensitivity) | `reports/profiling_results.json` |
+
+### CPU Profiling Results (Baseline)
+
+| Stage | Latency | % of Total |
+|---|---|---|
+| Preprocessing | ~7ms | 3.76% |
+| Embedding (×2) | ~89ms | 96.18% |
+| Scoring | <1ms | 0.06% |
+| **End-to-end** | **~186ms** | 100% |
+
+> Embedding generation dominates latency. Preprocessing and scoring are negligible.
+
+### Batch Size Sensitivity
+
+| Batch Size | Avg Latency | Throughput |
+|---|---|---|
+| 1 | 187.5ms | 5.33 rps |
+| 2 | 147.3ms | 6.79 rps |
+| 4 | 143.4ms | 6.97 rps |
+| 8 | 151.2ms | 6.61 rps |
+| 16 | 163.9ms | 6.10 rps |
+
+> Optimal throughput at batch size 4 (~7 rps). Larger batches show slight degradation on CPU due to memory overhead.
+
+### Final Tag
+`v1.0-final`
+
+### Key Final Artifact Paths
+
+| Artifact | Path |
+|---|---|
+| System Card | `reports/system_card.md` |
+| Reproducibility checklist | `reports/reproducibility_checklist.md` |
+| Profiling results | `reports/profiling_results.json` |
+| Inference config | `configs/m3_inference.yaml` |
+| Sample inference output | `reports/infer_results.json` |
+| Load test results | `reports/load_test_results.json` |
