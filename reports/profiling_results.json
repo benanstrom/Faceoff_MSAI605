@@ -1,0 +1,53 @@
+{
+  "hardware": {
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "system": "Windows",
+    "version": "10.0.26200",
+    "python": "3.12.3"
+  },
+  "stage_profile": {
+    "repeats": 10,
+    "preprocessing_mean_s": 0.006984,
+    "preprocessing_std_s": 0.018333,
+    "embedding_mean_s": 0.089286,
+    "embedding_std_s": 0.042289,
+    "scoring_mean_s": 0.000111,
+    "scoring_std_s": 0.000262,
+    "end_to_end_estimate_s": 0.185667,
+    "preprocessing_pct": 3.76,
+    "embedding_pct": 96.18,
+    "scoring_pct": 0.06
+  },
+  "batch_sensitivity": [
+    {
+      "batch_size": 1,
+      "total_time_s": 0.1875,
+      "avg_latency_s": 0.1875,
+      "throughput_rps": 5.3347
+    },
+    {
+      "batch_size": 2,
+      "total_time_s": 0.2947,
+      "avg_latency_s": 0.1473,
+      "throughput_rps": 6.7873
+    },
+    {
+      "batch_size": 4,
+      "total_time_s": 0.5737,
+      "avg_latency_s": 0.1434,
+      "throughput_rps": 6.972
+    },
+    {
+      "batch_size": 8,
+      "total_time_s": 1.2095,
+      "avg_latency_s": 0.1512,
+      "throughput_rps": 6.6144
+    },
+    {
+      "batch_size": 16,
+      "total_time_s": 2.623,
+      "avg_latency_s": 0.1639,
+      "throughput_rps": 6.0998
+    }
+  ]
+}
